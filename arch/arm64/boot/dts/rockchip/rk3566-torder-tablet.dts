@@ -18,9 +18,9 @@
 	compatible = "torder,tablet", "rockchip,rk3566";
 
 	aliases {
-		mmc2 = &sdhci;
+		mmc0 = &sdhci;
 		mmc1 = &sdmmc0;
-		mmc0 = &sdmmc1;
+		mmc2 = &sdmmc1;
 	};
 
 	chosen: chosen {
