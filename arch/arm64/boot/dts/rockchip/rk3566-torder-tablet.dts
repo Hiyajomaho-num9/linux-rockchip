@@ -170,7 +170,7 @@
 		wl-reg-on = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
 		bt-reg-on = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
 		sdio-ext-int-gpio = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
-		unisoc,btwf-file-name = "/lib/firmware/uwe5622/wcnmodem.bin";
+		unisoc,btwf-file-name = "/lib/firmware/uwe5621ds/wcnmodem.bin";
 		bt-wake-host;
 		bt-wake-host-gpio = <&gpio0 RK_PB7 GPIO_ACTIVE_HIGH>;
 		blksz-512;
