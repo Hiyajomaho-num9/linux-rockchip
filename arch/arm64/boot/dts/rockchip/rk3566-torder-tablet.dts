@@ -656,8 +656,8 @@
 			};
 
 			dcdc_boost: BOOST {
-				/* regulator-always-on; */
-				/* regulator-boot-on; */
+				regulator-always-on;
+				regulator-boot-on;
 				regulator-min-microvolt = <5200000>;
 				regulator-max-microvolt = <5400000>;
 				regulator-name = "boost";
@@ -917,7 +917,7 @@
 	pinctrl-names = "default";
 	uart-has-rtscts;
 	dma-names = "tx", "rx";
-	status = "disabled";
+	status = "okay";
 };
 
 &uart2 {
