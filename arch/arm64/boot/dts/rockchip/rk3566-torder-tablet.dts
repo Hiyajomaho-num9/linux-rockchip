@@ -170,7 +170,7 @@
 		wl-reg-on = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
 		bt-reg-on = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
 		sdio-ext-int-gpio = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
-		unisoc,btwf-file-name = "/lib/firmware/uwe5621ds/wcnmodem.bin";
+		unisoc,btwf-file-name = "/lib/firmware/uwe5621ds/wcnmodem_2ant.bin";
 		bt-wake-host;
 		bt-wake-host-gpio = <&gpio0 RK_PB7 GPIO_ACTIVE_HIGH>;
 		blksz-512;
@@ -221,13 +221,13 @@
 	};
 
 	
-	vcc5v0_usb_host: regulator-vcc5v0-usb2-host {
+	vcc5v0_usb_host1: regulator-vcc5v0-usb2-host1 {
 		compatible = "regulator-fixed";
 		enable-active-high;
 		gpio = <&gpio3 RK_PC0 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&vcc5v0_usb_host_en>;
-		regulator-name = "vcc5v0_usb2_host";
+		pinctrl-0 = <&vcc5v0_usb_host1_en>;
+		regulator-name = "vcc5v0_usb2_host1";
 		regulator-always-on;
 		regulator-boot-on;
 		regulator-min-microvolt = <5000000>;
@@ -235,14 +235,15 @@
 		vin-supply = <&vcc5v0_sys>;
 	}; 
 
-	
-	vcc5v0_usb_otg: regulator-vcc5v0-usb2-otg {
+	vcc5v0_usb_host: regulator-vcc5v0-usb2-host {
 		compatible = "regulator-fixed";
 		enable-active-high;
 		gpio = <&gpio3 RK_PB7 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&vcc5v0_usb_otg_en>;
-		regulator-name = "vcc5v0_usb2_otg";
+		pinctrl-0 = <&vcc5v0_usb_host_en>;
+		regulator-name = "vcc5v0_usb2_host";
+		regulator-always-on;
+		regulator-boot-on;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&dcdc_boost>;
@@ -795,11 +796,11 @@
 	};
 
 	usb {
-		vcc5v0_usb_host_en: vcc5v0-usb-host-en {
+		vcc5v0_usb_host1_en: vcc5v0-usb-host1-en {
 			rockchip,pins = <3 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
-		vcc5v0_usb_otg_en: vcc5v0-usb-otg-en {
+		vcc5v0_usb_host_en: vcc5v0-usb-otg-en {
 			rockchip,pins = <3 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
@@ -844,7 +845,7 @@
 	pmuio1-supply = <&vcc3v3_pmu>;
 	pmuio2-supply = <&vcca1v8_pmu>;
 	vccio1-supply = <&vccio_acodec>;
-	#vccio2-supply = <&vcc_1v8>;
+	#vccio2-supply = <&vcc_1v8>; //Don`t use
 	vccio3-supply = <&vccio_sd>;
 	vccio4-supply = <&vcc_1v8>;
 	vccio5-supply = <&vcc_3v3>;
@@ -855,6 +856,16 @@
 
 &pwm14 {
 	status = "okay";
+};
+
+&sdhci {
+    bus-width = <8>;
+    max-frequency = <120000000>;  // Adjust eMMC max-frequency for compatibility.
+    mmc-hs200-1_8v;
+    non-removable;
+    pinctrl-names = "default";
+    pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd>; // Emmc only run in hs200 mode.
+    status = "okay";
 };
 
 &sdmmc0 { /* sd-card slot */
@@ -891,17 +902,6 @@
 	vqmmc-supply = <&vcc_1v8>;
 	status = "okay";
 };
-
-&sdhci {
-    bus-width = <8>;
-    max-frequency = <100000000>;  // Adjust eMMC max-frequency for compatibility.
-    mmc-hs200-1_8v;
-    non-removable;
-    pinctrl-names = "default";
-    pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd>;
-    status = "okay";
-};
-
 
 &tsadc {
 	status = "okay";
@@ -959,76 +959,47 @@
 	status = "okay";
 };
 
-/* Enable USB */
-/* USB OTG/USB Host_1 USB 2.0 Comb */
-&usb2phy0 {
-	status = "okay";
-};
-
-&u2phy0_host {
-	status = "okay";
-};
-
+/* Enable USB 3.0 OTG */
 &u2phy0_otg {
 	status = "okay";
 };
 
-&usb_host0_ehci {
+&usb2phy0 {
 	status = "okay";
 };
 
-&usb_host0_ohci {
-	status = "okay";
-};
-
-/* USB Host_2/USB Host_3 USB 2.0 Comb */
-&usb2phy1 {
-	status = "okay";
-};
-
-&u2phy1_host {
-	status = "okay";
-};
-
-&u2phy1_otg {
-	status = "disabled";
-};
-
-&usb_host1_ehci {
-	status = "okay";
-};
-
-&usb_host1_ohci {
-	status = "okay";
-};
-
-/* USB3.0 OTG Only USB2.0 */
-&usbdrd30 {
+&combphy0_us {
 	status = "okay";
 };
 
 &usbdrd_dwc3 {
+	dr_mode = "otg";  
+	phys = <&u2phy0_otg>, <&combphy0_us PHY_TYPE_USB3>;
+	phy-names = "usb2-phy", "usb3-phy";
+	maximum-speed = "super-speed";  
+	extcon = <&usb2phy0>;
 	status = "okay";
 };
 
-/* USB3.0 Host to USB2.0 only */
-&combphy1_usq {
-	rockchip,dis-u3otg1-port;
+&usbdrd30 {
 	status = "okay";
 };
 
-&combphy2_psq {
-		status = "okay";
-};
 
-&usbhost30 {
+/* Enable USB 2.0 Host */
+&u2phy0_host {
 	status = "okay";
 };
 
-&usbhost_dwc3 {
+&usb_host0_ehci {
 	phys = <&u2phy0_host>;
 	phy-names = "usb2-phy";
-	maximum-speed = "high-speed"; 
+	status = "okay";
+};
+
+&usb_host0_ohci {
+	phys = <&u2phy0_host>;
+	phy-names = "usb2-phy";
 	status = "okay";
 };
 
