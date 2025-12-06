@@ -968,15 +968,12 @@
 	status = "okay";
 };
 
-&combphy0_us {
+&combphy1_usq {
 	status = "okay";
 };
 
 &usbdrd_dwc3 {
 	dr_mode = "otg";  
-	phys = <&u2phy0_otg>, <&combphy0_us PHY_TYPE_USB3>;
-	phy-names = "usb2-phy", "usb3-phy";
-	maximum-speed = "super-speed";  
 	extcon = <&usb2phy0>;
 	status = "okay";
 };
@@ -1001,6 +998,19 @@
 	phys = <&u2phy0_host>;
 	phy-names = "usb2-phy";
 	status = "okay";
+};
+
+/* Disable USB HOST2 & HOST3 */
+&usb2phy1 {
+	status = "disabled";
+};
+
+&u2phy1_host {
+	status = "disabled";
+};
+
+&u2phy1_otg {
+	status = "disabled";
 };
 
 &rk_rga {
