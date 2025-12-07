@@ -801,7 +801,7 @@
 			rockchip,pins = <3 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
-		vcc5v0_usb_host2_en: vcc5v0_usb_host2_en {
+		vcc5v0_usb_host2_en: vcc5v0-usb-host2-en {
 			rockchip,pins = <3 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
