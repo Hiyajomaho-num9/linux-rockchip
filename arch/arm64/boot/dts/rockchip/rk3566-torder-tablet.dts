@@ -966,7 +966,6 @@
 };
 
 &usb2phy0 {
-	vbus-supply = <&vcc5v0_usb_host1>;
 	status = "okay";
 };
 
@@ -985,7 +984,7 @@
 };
 
 
-/* USB 2.0 Host (PHY1)  */
+/* USB 2.0 Host (PHY1) - For keyboard/mouse/USB devices */
 &usb2phy1 {
 	status = "okay";
 };
@@ -1001,18 +1000,22 @@
 };
 
 &usb_host0_ehci {
-	phys = <&u2phy1_host>;
-	phy-names = "usb2-phy";
 	status = "okay";
 };
 
 &usb_host0_ohci {
-	phys = <&u2phy1_host>;
-	phy-names = "usb2-phy";
 	status = "okay";
 };
 
-/* USB 2.0/3.0 OTG (PHY0)  */
+&usb_host1_ehci {
+	status = "okay";
+};
+
+&usb_host1_ohci {
+	status = "okay";
+};
+
+/* USB 2.0/3.0 OTG (PHY0) - For OTG port */
 &u2phy0_host {
 	phy-supply = <&vcc5v0_usb_host1>;
 	status = "okay";
