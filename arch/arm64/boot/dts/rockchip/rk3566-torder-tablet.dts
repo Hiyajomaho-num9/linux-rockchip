@@ -985,37 +985,60 @@
 };
 
 
-/* Enable USB 2.0 Host */
-&u2phy0_host {
+/* USB 2.0 Host (PHY1)  */
+&usb2phy1 {
+	status = "okay";
+};
+
+&u2phy1_host {
+	phy-supply = <&vcc5v0_usb_host1>;
+	status = "okay";
+};
+
+&u2phy1_otg {
 	phy-supply = <&vcc5v0_usb_host1>;
 	status = "okay";
 };
 
 &usb_host0_ehci {
-	phys = <&u2phy0_host>;
+	phys = <&u2phy1_host>;
 	phy-names = "usb2-phy";
 	status = "okay";
 };
 
 &usb_host0_ohci {
-	phys = <&u2phy0_host>;
+	phys = <&u2phy1_host>;
 	phy-names = "usb2-phy";
 	status = "okay";
 };
 
-/* Disable USB HOST2 & HOST3 */
-&usb2phy1 {
-	status = "disabled";
-};
-
-&u2phy1_host {
-	status = "disabled";
-};
-
-&u2phy1_otg {
-	status = "disabled";
+/* USB 2.0/3.0 OTG (PHY0)  */
+&u2phy0_host {
+	phy-supply = <&vcc5v0_usb_host1>;
+	status = "okay";
 };
 
 &rk_rga {
+	status = "okay";
+};
+
+/* Enable hardware video codec (MPP) */
+&mpp_srv {
+	status = "okay";
+};
+
+&rkvdec {
+	status = "okay";
+};
+
+&rkvdec_mmu {
+	status = "okay";
+};
+
+&rkvenc {
+	status = "okay";
+};
+
+&rkvenc_mmu {
 	status = "okay";
 };
