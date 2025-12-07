@@ -224,7 +224,7 @@
 	vcc5v0_usb_host1: regulator-vcc5v0-usb2-host1 {
 		compatible = "regulator-fixed";
 		enable-active-high;
-		gpio = <&gpio3 RK_PC0 GPIO_ACTIVE_HIGH>;
+		gpio = <&gpio3 RK_PB7 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&vcc5v0_usb_host1_en>;
 		regulator-name = "vcc5v0_usb2_host1";
@@ -235,13 +235,14 @@
 		vin-supply = <&vcc5v0_sys>;
 	}; 
 
-	vcc5v0_usb_host: regulator-vcc5v0-usb2-host {
+	vcc5v0_usb_host2: regulator-vcc5v0-usb2-host2 {
+		//Android Dts has it,but no use.
 		compatible = "regulator-fixed";
 		enable-active-high;
-		gpio = <&gpio3 RK_PB7 GPIO_ACTIVE_HIGH>;
+		gpio = <&gpio3 RK_PC0 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&vcc5v0_usb_host_en>;
-		regulator-name = "vcc5v0_usb2_host";
+		pinctrl-0 = <&vcc5v0_usb_host2_en>;
+		regulator-name = "vcc5v0_usb2_host2";
 		regulator-always-on;
 		regulator-boot-on;
 		regulator-min-microvolt = <5000000>;
@@ -797,11 +798,11 @@
 
 	usb {
 		vcc5v0_usb_host1_en: vcc5v0-usb-host1-en {
-			rockchip,pins = <3 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
+			rockchip,pins = <3 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
-		vcc5v0_usb_host_en: vcc5v0-usb-otg-en {
-			rockchip,pins = <3 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
+		vcc5v0_usb_host2_en: vcc5v0_usb_host2_en {
+			rockchip,pins = <3 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
@@ -965,6 +966,7 @@
 };
 
 &usb2phy0 {
+	vbus-supply = <&vcc5v0_usb_host1>;
 	status = "okay";
 };
 
@@ -985,6 +987,7 @@
 
 /* Enable USB 2.0 Host */
 &u2phy0_host {
+	phy-supply = <&vcc5v0_usb_host1>;
 	status = "okay";
 };
 
