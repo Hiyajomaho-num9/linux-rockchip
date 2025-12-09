@@ -24,7 +24,7 @@
 	};
 
 	chosen: chosen {
-		bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait";
+		bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait rk817_battery.force_reset=1";
 	};
 
 	adc-keys {
@@ -677,9 +677,9 @@
 		
 		battery {
 			compatible = "rk817,battery";
-			ocv_table = <3400 3450 3500 3550 3600 3650 3700
-						 3750 3800 3850 3900 3950 3999 4049
-						 4099 4149 4199 4249 4299 4349 4399>;
+			ocv_table = <3400 3513 3578 3687 3734 3752 3763
+						 3766 3771 3784 3804 3836 3885 3925
+						 3962 4005 4063 4114 4169 4227 4303>;
 			ntc_table = <45067 42950 40946 39048 37251 35548 33934 
 						 32371 30952 29574 28267 27025 25846 24726 
 						 23661 22649 21686 20771 19931 19070 18280 
@@ -700,19 +700,20 @@
 			sleep_exit_current = <180>;
 			sleep_filter_current = <100>;
 			power_off_thresd = <3400>;
-			zero_algorithm_vol = <3950>;
+			zero_algorithm_vol = <3850>;
 			max_soc_offset = <60>;
 			monitor_sec = <5>;
 			sample_res = <10>;
 			virtual_power = <0>;
+			fb_temperature = <115>;
 		};
 
 		charger {
 			compatible = "rk817,charger";
 			min_input_voltage = <4500>;
-			max_input_current = <2000>;
+			max_input_current = <1500>;
+			max_chrg_current = <2000>;
 			max_chrg_voltage = <4300>;
-			max_chrg_current = <2000>;		
 			chrg_term_mode = <0>;
 			chrg_finish_cur = <300>;
 			virtual_power = <0>;
@@ -1022,26 +1023,5 @@
 };
 
 &rk_rga {
-	status = "okay";
-};
-
-/* Enable hardware video codec (MPP) */
-&mpp_srv {
-	status = "okay";
-};
-
-&rkvdec {
-	status = "okay";
-};
-
-&rkvdec_mmu {
-	status = "okay";
-};
-
-&rkvenc {
-	status = "okay";
-};
-
-&rkvenc_mmu {
 	status = "okay";
 };
